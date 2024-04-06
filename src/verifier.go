@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 )
@@ -34,6 +35,18 @@ func validateJsonStr(jsonStr string) (bool, error) {
 	err := json.Unmarshal([]byte(jsonStr), &jsonData)
 	if err != nil {
 		return false, err
+	}
+
+	if jsonData.PolicyName == "" || jsonData.PolicyDocument.Version == "" {
+		return false, fmt.Errorf("missing required fields: PolicyName or PolicyDocument.Version")
+	}
+
+	if len(jsonData.PolicyDocument.Statement) == 0 {
+		return false, fmt.Errorf("missing required field: PolicyDocument.Statement")
+	}
+
+	if jsonData.PolicyDocument.Statement[0].Resource == "" {
+		return false, fmt.Errorf("missing required field: PolicyDocument.Statement[0].Resource")
 	}
 
 	return !(jsonData.PolicyDocument.Statement[0].Resource == "*"), nil

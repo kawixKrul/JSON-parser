@@ -52,3 +52,7 @@ This command reads JSON from the file `test.json`, validates it, and prints the 
 ```
 
 This command directly processes the provided JSON, validates it, and prints the validation result.
+
+### Note
+
+Input data must be in AWS::IAM::Role Policy format otherwise the program will give you the corresponding error.
